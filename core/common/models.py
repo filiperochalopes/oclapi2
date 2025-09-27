@@ -1,3 +1,4 @@
+import logging
 from celery.result import AsyncResult
 from celery_once import AlreadyQueued
 from django.conf import settings
@@ -16,6 +17,8 @@ from django_elasticsearch_dsl.registries import registry
 from django_elasticsearch_dsl.signals import RealTimeSignalProcessor
 from elasticsearch import TransportError
 from pydash import get, compact
+
+logger = logging.getLogger(__name__)
 
 from core.common.tasks import update_collection_active_concepts_count, update_collection_active_mappings_count, \
     delete_s3_objects
@@ -1106,9 +1109,9 @@ class ConceptContainerModel(VersionedModel, ChecksumModel):
     @property
     def concepts_distribution(self):
         facets = self.get_concept_facets()
-        print("Concept facets Raw", facets)
+        logger.debug("Concept facets Raw %s", facets)
         try:
-            print("Concept facets", facets.to_dict())
+            logger.debug("Concept facets %s", facets.to_dict())
         except: # pylint: disable=bare-except
             pass
         return {

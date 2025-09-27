@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import urllib.parse
 from jsonpath_ng import parse
@@ -9,6 +10,8 @@ from core.common.tests import OCLAPITestCase
 from core.orgs.models import Organization
 from core.sources.models import Source
 from core.users.models import UserProfile
+
+logger = logging.getLogger(__name__)
 
 
 class ValueSetsTest(OCLAPITestCase):
@@ -112,10 +115,8 @@ class ValueSetsTest(OCLAPITestCase):
         #               'value_sets/value_sets_who_core_contraceptive.json',
         #               'value_sets/value_sets_who_core_hiv.json',
         #               'value_sets/value_sets_who_core_education.json']
-        print()
-
         for test_file in test_files:
-            print('Testing ' + test_file)
+            logger.info('Testing %s', test_file)
             url = f"/orgs/{self.organization.mnemonic}/CodeSystem/"
             json_file = self.load_json('code_systems/code_systems_who_core.json')
             self.remove_duplicate_codes(json_file)

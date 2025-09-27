@@ -1,7 +1,10 @@
+import logging
 from django.conf import settings
 from django.db import models
 from ocldev.checksum import Checksum as ChecksumBase
 from pydash import get
+
+logger = logging.getLogger(__name__)
 
 
 class ChecksumModel(models.Model):
@@ -317,7 +320,7 @@ class ChecksumDiff:
         return res
 
     def print(self):
-        print(self.pretty_print_dict(self.result))
+        logger.info(self.pretty_print_dict(self.result))
 
     def get_db_id_for(self, diff_key, identity):
         if diff_key == 'retired':

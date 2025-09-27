@@ -786,7 +786,7 @@ class BulkImportInline(BaseImporter):
             self.unchanged.append(item)
             return
 
-        print("****Unexpected Result****", result)
+        logger.warning("****Unexpected Result**** %s", result)
         self.others.append(item)
 
     def notify_progress(self):
@@ -807,9 +807,9 @@ class BulkImportInline(BaseImporter):
 
     def run(self):  # pylint: disable=too-many-branches,too-many-statements,too-many-locals
         if self.self_task_id:  # pragma: no cover
-            print("****STARTED SUBPROCESS****")
-            print(f"TASK ID: {self.self_task_id}")
-            print("***************")
+            logger.info("****STARTED SUBPROCESS****")
+            logger.info("TASK ID: %s", self.self_task_id)
+            logger.info("***************")
         new_concept_ids = set()
         new_mapping_ids = set()
         for original_item in self.input_list:
@@ -1102,9 +1102,9 @@ class BulkImportParallelRunner(BaseImporter):  # pragma: no cover
 
     def run(self):
         if self.self_task_id:
-            print("****STARTED MAIN****")
-            print(f"TASK ID: {self.self_task_id}")
-            print("***************")
+            logger.info("****STARTED MAIN****")
+            logger.info("TASK ID: %s", self.self_task_id)
+            logger.info("***************")
         while len(self.parts) > 0:
             part_list = self.parts.popleft()
             if part_list:

@@ -1,9 +1,12 @@
 # pylint: disable=line-too-long
 import json
+import logging
 
 from django.conf import settings
 from litellm import completion
 from pydash import get
+
+logger = logging.getLogger(__name__)
 
 
 class LiteLLMService:
@@ -162,7 +165,7 @@ class LiteLLMService:
     def recommend(self, map_project, row, candidates, include_default_filter=False):  # pragma: no cover
         prompt = self.get_prompt(map_project, row, candidates, include_default_filter)
         response = self.__call_anthropic(prompt)
-        print("****ANT RESPONSE****")
+        logger.debug("****ANT RESPONSE****")
         return response
 
     @staticmethod

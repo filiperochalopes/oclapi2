@@ -1,3 +1,4 @@
+import logging
 import re
 import urllib
 
@@ -7,6 +8,8 @@ from pydash import compact, get
 
 from core.common.constants import ES_REQUEST_TIMEOUT
 from core.common.utils import is_url_encoded_string
+
+logger = logging.getLogger(__name__)
 
 
 class CustomESFacetedSearch(FacetedSearch):
@@ -211,7 +214,7 @@ class CustomESSearch:
         import time
         start_time = time.time()
         s, hits, total = self.__get_response(exact_count)
-        print("ES query execute", time.time() - start_time)
+        logger.debug("ES query execute %s", time.time() - start_time)
         max_score = hits.max_score or 1
 
         start_time = time.time()
@@ -224,7 +227,7 @@ class CustomESSearch:
             highlight = get(result, 'highlight')
             if highlight:
                 self.highlights[int(_id)] = highlight.to_dict()
-        print("Highlights/Score", time.time() - start_time)
+        logger.debug("Highlights/Score %s", time.time() - start_time)
         if self.document and self.document.__name__ == 'RepoDocument':
             from core.sources.models import Source
             from core.collections.models import Collection

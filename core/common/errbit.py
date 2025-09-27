@@ -99,8 +99,8 @@ class ThreadedRequest(threading.Thread):
         elif status == 503:
             exception_message = "Service unavailable. You may be over your quota."
 
-        print("MESSAGE: ", self.message)
-        print("ERRBIT_EXCEPTION: ", exception_message)
+        logging.error("MESSAGE: %s", self.message)
+        logging.error("ERRBIT_EXCEPTION: %s", exception_message)
 
 
 class ErrbitClient:

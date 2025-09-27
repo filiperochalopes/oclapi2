@@ -1,3 +1,4 @@
+import logging
 import time
 
 from celery_once import AlreadyQueued
@@ -10,6 +11,8 @@ from django.db.models import UniqueConstraint, F, QuerySet, Max
 from django.utils import timezone
 from django.utils.functional import cached_property
 from pydash import get, compact
+
+logger = logging.getLogger(__name__)
 
 from core.collections.constants import (
     COLLECTION_TYPE, CONCEPT_FULLY_SPECIFIED_NAME_UNIQUE_PER_COLLECTION_AND_LOCALE,
@@ -1391,16 +1394,16 @@ class Expansion(BaseResourceModel):
     def wait_until_processed(self):  # pragma: no cover
         processing = self.is_processing
         while processing:
-            print("Expansion is still processing, sleeping for 5 secs...")
+            logger.info("Expansion is still processing, sleeping for 5 secs...")
             time.sleep(5)
             try:
                 self.refresh_from_db()
             except Expansion.DoesNotExist:
-                print("Expansion no longer exists, exiting wait loop.")
+                logger.info("Expansion no longer exists, exiting wait loop.")
                 return
             processing = self.is_processing
             if not processing:
-                print("Expansion processed, waking up...")
+                logger.info("Expansion processed, waking up...")
 
     def calculate_uri(self):
         version = self.collection_version
