@@ -31,8 +31,8 @@ If `OIDC_SERVER_URL` and `OIDC_REALM` are not provided then the Django Auth is e
 ### Run Checks
 (use the `docker exec` command in a service started with `docker compose up -d`)
 1. Pylint (pep8):
-   
-   `docker exec -it oclapi2-api-1 pylint -j2 core` 
+
+   `docker exec -it oclapi2-api-1 pylint -j2 core`
 
     or
 
@@ -41,20 +41,27 @@ If `OIDC_SERVER_URL` and `OIDC_REALM` are not provided then the Django Auth is e
 
    `docker exec -it oclapi2-api-1 bash coverage.sh`
 
-   or
+    or
 
    `docker compose -f docker-compose.yml -f docker-compose.ci.yml run --rm api bash coverage.sh`
 3. Tests
 
-    `docker exec -it oclapi2-api-1  python manage.py test --keepdb -v3` 
+    `docker exec -it oclapi2-api-1  python manage.py test --keepdb -v3`
 
     or
 
-    `docker exec -it oclapi2-api-1  python manage.py test --keepdb -v3 -- core.sources.tests.tests.SourceTest` 
+   `docker exec -it oclapi2-api-1  python manage.py test --keepdb -v3 -- core.sources.tests.tests.SourceTest`
 
     or
 
-    `docker compose -f docker-compose.yml -f docker-compose.ci.yml run --rm api python manage.py test --keepdb -v3`
+   `docker compose -f docker-compose.yml -f docker-compose.ci.yml run --rm api python manage.py test --keepdb -v3`
+
+### Testing MCQL
+To test the Medical Concept Query Language (MCQL) interactively:
+
+1. Ensure `.env` file is configured with database credentials (DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE)
+2. Run: `python test_mcql.py --interactive`
+3. In the interactive shell, type MCQL queries or 'help' for examples, 'quit' to exit
 
 ### DB migrations
 After modifying model you need to create migration files. Run:
